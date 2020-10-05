@@ -13,8 +13,7 @@ public class ButtonPanel extends JPanel {
     private Fleet fleet;
     private final ArrayList<CustomButton> buttons = new ArrayList<>();
 
-    public ButtonPanel(Fleet fleet, Dimension dimension) {
-        this.fleet = fleet;
+    public ButtonPanel(Dimension dimension) {
 
         int width = dimension.width;
         int height = dimension.height;
@@ -46,7 +45,15 @@ public class ButtonPanel extends JPanel {
 
             }
         }
-        paintButtons();
+
+        for(CustomButton b : buttons){
+            if ((b.getCoordinate().x + b.getCoordinate().y) % 2 == 0) { //Der Modulo Operator ermittelt den Restwert einer Division. Beispielsweise würde 4 Modulo 2 den Restwert 0 ergeben. 5 Modulo 2 würde den Restwert 1 ergeben. Denn 5 geteilt durch 2 ist gleich 2 Rest 1.
+                    b.setBackground(new Color(255, 255, 255));
+                } else {
+                    b.setBackground(new Color(240, 240, 240));
+                }
+        }
+//        paintButtons();
     }
 
     public void importFleet(Fleet fleet){
@@ -79,18 +86,14 @@ public class ButtonPanel extends JPanel {
             public void run(){
                 JFrame frame = new JFrame();
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setSize(new Dimension(700, 750));
+                frame.setSize(new Dimension(677, 730));
 
                 frame.setLayout(new FlowLayout());
                 frame.setLocationRelativeTo(null);
 
-
-                long seed;
-                seed = System.currentTimeMillis();
                 Dimension boardSize = new Dimension(10,10);
 
-                Fleet fleet = new Fleet(boardSize.width ,boardSize.height, seed);
-                ButtonPanel buttonPanel = new ButtonPanel(fleet, boardSize );
+                ButtonPanel buttonPanel = new ButtonPanel(boardSize );
                 frame.add(buttonPanel);
 
                 JButton button = new JButton("New Board");
@@ -106,7 +109,7 @@ public class ButtonPanel extends JPanel {
                 });
 
                 frame.add(button);
-
+                frame.setResizable(false);
                 frame.setVisible(true);
             }
         });
