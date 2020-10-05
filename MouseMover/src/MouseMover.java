@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.Random;
 
 public class MouseMover {
-    public static final int FIVE_SECONDS = 5000;
+    public static final int FIVE_SECONDS = 8000;
     public static final int MAX_X = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     public static final int MAX_Y = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
@@ -16,8 +16,19 @@ public class MouseMover {
 
         Thread mouseMoverThreat = new Thread() {
             public void run() {
+
                 while (true) {
-                    robot.mouseMove(random.nextInt(MAX_X), random.nextInt(MAX_Y));
+
+                    //smooth
+                    int startX = MouseInfo.getPointerInfo().getLocation().x;
+                    int startY = MouseInfo.getPointerInfo().getLocation().y;
+                    int endX = random.nextInt(MAX_X);
+                    int endY = random.nextInt(MAX_Y);
+                    mouseGlide(startX, startY, endX, endY,400,1000);
+
+                    //instant
+//                    robot.mouseMove(random.nextInt(MAX_X), random.nextInt(MAX_Y));
+
                     try {
                         Thread.sleep(FIVE_SECONDS);
                     } catch (InterruptedException e) {
@@ -79,4 +90,21 @@ public class MouseMover {
 //            Thread.sleep(FIVE_SECONDS);
 //        }
     }
+
+    public static void mouseGlide(int x1, int y1, int x2, int y2, int t, int n) {
+            try {
+                Robot r = new Robot();
+                double dx = (x2 - x1) / ((double) n);
+                double dy = (y2 - y1) / ((double) n);
+                double dt = t / ((double) n);
+                for (int step = 1; step <= n; step++) {
+                    Thread.sleep((int) dt);
+                    r.mouseMove((int) (x1 + dx * step), (int) (y1 + dy * step));
+                }
+            } catch (AWTException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 }
