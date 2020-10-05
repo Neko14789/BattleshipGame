@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BattleshipGame.iml" filepath="$PROJECT_DIR$/BattleshipGame.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MouseMover/MouseMover.iml" filepath="$PROJECT_DIR$/MouseMover/MouseMover.iml" />
     </modules>
   </component>
 </project>

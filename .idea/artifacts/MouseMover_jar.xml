@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="MouseMover:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/MouseMover_jar</output-path>
+    <root id="archive" name="AIBMM - Automatic Inactivity Blocking Mouse Mover.jar">
+      <element id="module-output" name="MouseMover" />
+    </root>
+  </artifact>
+</component>
