@@ -8,6 +8,7 @@ public class MouseMover {
     public static final int FIVE_SECONDS = 8000;
     public static final int MAX_X = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     public static final int MAX_Y = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+    public static boolean instantMovement = false;
 
 
     public static void main(String... args) throws Exception {
@@ -19,16 +20,18 @@ public class MouseMover {
 
                 while (true) {
 
-                    //smooth
-                    int startX = MouseInfo.getPointerInfo().getLocation().x;
-                    int startY = MouseInfo.getPointerInfo().getLocation().y;
-                    int endX = random.nextInt(MAX_X);
-                    int endY = random.nextInt(MAX_Y);
-                    mouseGlide(startX, startY, endX, endY,400,1000);
+                    if(instantMovement) {
+                        //instant
+                        robot.mouseMove(random.nextInt(MAX_X), random.nextInt(MAX_Y));
+                    } else {
+                        //smooth
+                        int startX = MouseInfo.getPointerInfo().getLocation().x;
+                        int startY = MouseInfo.getPointerInfo().getLocation().y;
+                        int endX = random.nextInt(MAX_X);
+                        int endY = random.nextInt(MAX_Y);
+                        mouseGlide(startX, startY, endX, endY,400,1000);
 
-                    //instant
-//                    robot.mouseMove(random.nextInt(MAX_X), random.nextInt(MAX_Y));
-
+                    }
                     try {
                         Thread.sleep(FIVE_SECONDS);
                     } catch (InterruptedException e) {
@@ -50,10 +53,12 @@ public class MouseMover {
         frame.setLocationRelativeTo(null);
         frame.setTitle("AIBMM - Automatic Inactivity Blocking Mouse Mover");
 
+
         JLabel mouseMoverStateLabel = new JLabel("Mouse Mover: Offline");
         mouseMoverStateLabel.setForeground(Color.RED);
         frame.add(mouseMoverStateLabel);
         mouseMoverStateLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
 
         JButton stopMouseMoverButton = new JButton("Stop Mouse Mover");
         frame.add(stopMouseMoverButton);
@@ -68,6 +73,7 @@ public class MouseMover {
             }
         );
 
+
         JButton startMouseMoverButton = new JButton("Start Mouse Mover");
         frame.add(startMouseMoverButton);
         startMouseMoverButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -80,6 +86,19 @@ public class MouseMover {
 
             }
         });
+
+
+        JCheckBox instantMovementCheckBox = new JCheckBox("Instant Movement:", false);
+        instantMovementCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                instantMovement = instantMovementCheckBox.isSelected();
+
+            }
+        });
+        frame.add(instantMovementCheckBox);
+        instantMovementCheckBox.setAlignmentX(Component.CENTER_ALIGNMENT);
+
 
         frame.setSize(new Dimension(250,150));
         frame.setVisible(true);
