@@ -14,7 +14,6 @@ public class ButtonPanel extends JPanel {
     private final ArrayList<CustomButton> buttons = new ArrayList<>();
 
     public ButtonPanel(Dimension dimension) {
-
         int width = dimension.width;
         int height = dimension.height;
         setPreferredSize(new Dimension(width*65, height*65));
@@ -25,24 +24,26 @@ public class ButtonPanel extends JPanel {
                 CustomButton b = new CustomButton(x + ":" + y);
                 b.setCoordinate(new Coordinate(x,y));
 
-
-
                 b.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         System.out.println(b.getCoordinate().x + ":" + b.getCoordinate().y + "-->" + b.getCoordinate().shot);
                         b.getCoordinate().shot = true;
                         b.setText("X");
-//                        b.setEnabled(false);
-                        b.setBackground(Color.cyan);
+                        b.setEnabled(false);
+
+                        if (fleet == null) {
+                            b.setBackground(Color.cyan);
+                        } else if ( fleet.fleet.stream().anyMatch(ship ->
+                            ship.getShipCoordinates().stream().anyMatch(coordinate ->
+                                coordinate.equalCoordinates(b.getCoordinate())))) {
+                            b.setBackground(new Color(200, 0, 0));
+                        } else {
+                            b.setBackground(Color.darkGray);
+                        }
                     }
                 });
-
-
-
-
                 add(b);
                 buttons.add(b);
-
             }
         }
 
@@ -74,11 +75,10 @@ public class ButtonPanel extends JPanel {
                     b.setBackground(new Color(240, 240, 240));
                 }
             }
+            b.setText(b.getCoordinate().x + ":" + b.getCoordinate().y);
+            b.setEnabled(true);
         }
-
     }
-
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable(){
