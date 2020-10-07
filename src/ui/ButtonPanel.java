@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class ButtonPanel extends JPanel {
     private Fleet fleet;
     private final ArrayList<CustomButton> buttons = new ArrayList<>();
+    private boolean revealShips = false;
 
     public ButtonPanel(Dimension dimension) {
         int width = dimension.width;
@@ -35,7 +36,7 @@ public class ButtonPanel extends JPanel {
                             b.setBackground(Color.cyan);
                         } else if ( fleet.fleet.stream().anyMatch(ship ->
                             ship.getShipCoordinates().stream().anyMatch(coordinate ->
-                                coordinate.equalCoordinates(b.getCoordinate())))) {
+                                coordinate.equalCoordinates(b.getCoordinate()))) ) {
                             b.setBackground(new Color(200, 0, 0));
                         } else {
                             b.setBackground(Color.darkGray);
@@ -66,7 +67,7 @@ public class ButtonPanel extends JPanel {
         for(CustomButton b : buttons){
             if ( fleet.fleet.stream().anyMatch(ship ->
             ship.getShipCoordinates().stream().anyMatch(coordinate ->
-                coordinate.equalCoordinates(b.getCoordinate())))) {
+                coordinate.equalCoordinates(b.getCoordinate()))) && revealShips) {
                     b.setBackground(Color.BLACK);
                 } else {
                 if ((b.getCoordinate().x + b.getCoordinate().y) % 2 == 0) { //Der Modulo Operator ermittelt den Restwert einer Division. Beispielsweise würde 4 Modulo 2 den Restwert 0 ergeben. 5 Modulo 2 würde den Restwert 1 ergeben. Denn 5 geteilt durch 2 ist gleich 2 Rest 1.
@@ -96,15 +97,29 @@ public class ButtonPanel extends JPanel {
                 ButtonPanel buttonPanel = new ButtonPanel(boardSize );
                 frame.add(buttonPanel);
 
+                JCheckBox checkBox = new JCheckBox("reveal ships");
+                checkBox.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        buttonPanel.revealShips = checkBox.isSelected();
+                        if (buttonPanel.fleet != null) {
+                            buttonPanel.paintButtons();
+                        }
+                    }
+                });
+                frame.add(checkBox);
+
                 JButton button = new JButton("New Board");
 
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("DEBUG: Creating new board");
+                        buttonPanel.revealShips = checkBox.isSelected();
                         button.setEnabled(false);
                         buttonPanel.importFleet(new Fleet(boardSize.width,boardSize.height, System.currentTimeMillis()));
                         button.setEnabled(true);
+
                     }
                 });
 
