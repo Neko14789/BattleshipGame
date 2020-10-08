@@ -42,6 +42,6 @@ public class GameWindow extends JFrame {
 
 
     public static void main(String[] args) {
-        GameWindow gameWindow = new GameWindow(new Dimension(1920,1080), "Battleship Game");
+        GameWindow gameWindow = new GameWindow(new Dimension(1000,900), "Battleship Game");
     }
 }
