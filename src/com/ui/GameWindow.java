@@ -58,6 +58,11 @@ public class GameWindow extends JFrame {
                     JOptionPane.showMessageDialog(GameWindow.this, "Dev Mode Activated", "Dev Mode", JOptionPane.INFORMATION_MESSAGE);
                     return true;
                 }
+                if(e.getID() == KeyEvent.KEY_PRESSED && e.getKeyCode()=='X' && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0) && ((e.getModifiers() & KeyEvent.ALT_MASK) != 0) && ((e.getModifiers() & KeyEvent.SHIFT_MASK) != 0) ){
+                    System.out.println("Dev Mode Deactivated");
+                    JOptionPane.showMessageDialog(GameWindow.this, "Dev Mode Deactivated", "Dev Mode", JOptionPane.INFORMATION_MESSAGE);
+                    return true;
+                }
                 return false;
             }
 
