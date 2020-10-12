@@ -1,7 +1,8 @@
-package ui;
+package com.ui;
 
-import game.Coordinate;
-import game.Fleet;
+import com.game.Coordinate;
+import com.game.FleetGenerator;
+import com.game.Ship;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class ButtonPanel extends JPanel {
-    private Fleet fleet;
+    private ArrayList<Ship> fleet;
     private final ArrayList<CustomButton> buttons = new ArrayList<>();
     private boolean revealShips = false;
 
@@ -18,8 +19,9 @@ public class ButtonPanel extends JPanel {
         int width = dimension.width;
         int height = dimension.height;
         setPreferredSize(new Dimension(width*65, height*65));
-
         setLayout(new GridLayout(height, width));
+
+        FleetGenerator fleetGenerator = new FleetGenerator();
         for (int x = 0; x < height; ++x) {
             for (int y = 0; y < width; ++y) {
                 CustomButton b = new CustomButton(x + ":" + y);
@@ -34,7 +36,7 @@ public class ButtonPanel extends JPanel {
 
                         if (fleet == null) {
                             b.setBackground(Color.cyan);
-                        } else if ( fleet.fleet.stream().anyMatch(ship ->
+                        } else if ( fleet.stream().anyMatch(ship ->
                             ship.getShipCoordinates().stream().anyMatch(coordinate ->
                                 coordinate.equalCoordinates(b.getCoordinate()))) ) {
                             b.setBackground(new Color(200, 0, 0));
@@ -58,14 +60,14 @@ public class ButtonPanel extends JPanel {
 //        paintButtons();
     }
 
-    public void importFleet(Fleet fleet){
+    public void importFleet(ArrayList<Ship> fleet){
         this.fleet = fleet;
         paintButtons();
     }
 
     public void paintButtons() {
         for(CustomButton b : buttons){
-            if ( fleet.fleet.stream().anyMatch(ship ->
+            if ( fleet.stream().anyMatch(ship ->
             ship.getShipCoordinates().stream().anyMatch(coordinate ->
                 coordinate.equalCoordinates(b.getCoordinate()))) && revealShips) {
                     b.setBackground(Color.BLACK);
@@ -117,9 +119,12 @@ public class ButtonPanel extends JPanel {
                         System.out.println("DEBUG: Creating new board");
                         buttonPanel.revealShips = checkBox.isSelected();
                         button.setEnabled(false);
-                        buttonPanel.importFleet(new Fleet(boardSize.width,boardSize.height, System.currentTimeMillis()));
-                        button.setEnabled(true);
 
+                        FleetGenerator fleetGenerator = new FleetGenerator();
+                        ArrayList<Ship> fleet = fleetGenerator.createFleet(boardSize.width,boardSize.height, System.currentTimeMillis());
+
+                        buttonPanel.importFleet(fleet);
+                        button.setEnabled(true);
                     }
                 });
 

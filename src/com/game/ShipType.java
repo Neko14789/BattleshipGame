@@ -1,4 +1,4 @@
-package game;
+package com.game;
 
 public enum ShipType {
     Carrier (5, "C"),

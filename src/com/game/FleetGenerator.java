@@ -1,18 +1,22 @@
-package game;
+package com.game;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Fleet {
+public class FleetGenerator {
     private final Random random;
     public final ArrayList<Ship> fleet;
 
-    public Fleet(int boardWidth, int boardHeight, long fleetSeed){
-
+    public FleetGenerator(){
         random = new Random();
+        fleet = new ArrayList<>();
+    }
+
+    public ArrayList<Ship> createFleet(int boardWidth, int boardHeight, long fleetSeed){
+
+
         random.setSeed(fleetSeed);
 
-        fleet = new ArrayList<>();
         while (!(fleet.size() == 10)) {
 
             ShipType shipType = ShipType.Carrier;
@@ -61,6 +65,7 @@ public class Fleet {
             }
         }
         System.out.println("DEBUG: Fleet created");
+        return fleet;
     }
 
     private boolean checkPlacementValid(Ship ship1, Ship ship2) {
@@ -89,6 +94,7 @@ public class Fleet {
     }
 
     public static void main(String[] args) {
-        Fleet fleet = new Fleet(10,10, 3);
+        FleetGenerator fleetGenerator = new FleetGenerator();
+        ArrayList<Ship> fleet = fleetGenerator.createFleet(10,10, 3);
     }
 }

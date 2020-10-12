@@ -1,6 +1,6 @@
-package ui;
+package com.ui;
 
-import game.Coordinate;
+import com.game.Coordinate;
 
 import javax.swing.*;
 
